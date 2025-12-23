@@ -5,14 +5,30 @@ main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false, home: Firstpage());
   }
 }
 
-class Firstpage extends StatelessWidget {
+class Firstpage extends StatefulWidget {
+  @override
+  State<Firstpage> createState() => _FirstpageState();
+}
+
+class _FirstpageState extends State<Firstpage> {
+  Color? color1 = Color(0xff1d1d31);
+  Color? color2 = Color(0xff1d1d31);
+  static int age = 20;
+  static int weight = 70;
+  static double height = 170;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,33 +53,52 @@ class Firstpage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Color(0xff1d1d31),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.male, size: 100, color: Colors.white),
-                          Text("Male", style: TextStyle(color: Colors.white)),
-                        ],
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          color1 = Colors.blueAccent;
+                          color2 = Color(0xff1d1d31);
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: color1,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.male, size: 100, color: Colors.white),
+                            Text("Male", style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(width: 30),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Color(0xff131328),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.female, size: 100, color: Colors.white),
-                          Text("Female", style: TextStyle(color: Colors.white)),
-                        ],
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          color2 = Colors.pink;
+                          color1 = Color(0xff1d1d31);
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: color2,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.female, size: 100, color: Colors.white),
+                            Text(
+                              "Female",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -89,15 +124,33 @@ class Firstpage extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  Text(
-                    "177.cm",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "$height",
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      ),
+                      Text(
+                        "cm",
+                        style: TextStyle(
+                          color: Color(0xff646478),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                   Slider(
-                    value: 0,
-                    min: 0,
-                    max: 100,
-                    onChanged: (value) {},
+                    value: height,
+                    min: 100,
+                    max: 200,
+                    onChanged: (double newvalue) {
+                      print(newvalue);
+                      setState(() {
+                        height = newvalue;
+                      });
+                    },
                     activeColor: Color(0xffd93559),
                   ),
                 ],
@@ -127,21 +180,29 @@ class Firstpage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "70",
+                            "$weight",
                             style: TextStyle(color: Colors.white, fontSize: 40),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
                                 child: Icon(
                                   Icons.add,
                                   color: Color(0xff4e4f5e),
                                 ),
                               ),
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
                                 child: Icon(
                                   Icons.remove,
                                   color: Color(0xff4e4f5e),
@@ -172,21 +233,29 @@ class Firstpage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "20",
+                            "$age",
                             style: TextStyle(color: Colors.white, fontSize: 40),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
                                 child: Icon(
                                   Icons.add,
                                   color: Color(0xff4e4f5e),
                                 ),
                               ),
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
                                 child: Icon(
                                   Icons.remove,
                                   color: Color(0xff4e4f5e),
@@ -202,21 +271,22 @@ class Firstpage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          InkWell(
+            onTap: () {
+              double bmi = weight / ((height / 100) * (height / 100));
+              print(bmi);
+            },
             child: Container(
               alignment: Alignment.center,
               height: 50,
               width: double.infinity,
               color: Color(0xffd93559),
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Calculate",
-                  style: TextStyle(
-                    fontSize: 35,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white,
-                  ),
+              child: Text(
+                "Calculate",
+                style: TextStyle(
+                  fontSize: 35,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
                 ),
               ),
             ),
